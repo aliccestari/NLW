@@ -90,51 +90,39 @@ const perguntas = [
       correta: 0
     },
   ];
-  
-  // o simbolo de # significa q esta procurando pelo ID da tag
+
   const quiz = document.querySelector('#quiz')
   
-  //transforma tudo q tem no documento em JavaScript
   const template = document.querySelector('template')
   
-  //objeto, tipo de dados Set, não pode ter informaçoes repetidas
   const corretas = new Set()
+
   const totalDePerguntas = perguntas.length
+
   const mostrarTotal = document.querySelector('#acertos span')
+
   mostrarTotal.textContent = corretas.size + ' de ' + totalDePerguntas
   
-  //para cada item de perguntas
   for(const item of perguntas){
     const quizItem = template.content.cloneNode(true)
     quizItem.querySelector('h3').textContent = item.pergunta
-  
     for(let resposta of item.respostas){
         const dt = quizItem.querySelector('dl dt').cloneNode(true)
         dt.querySelector('span').textContent = resposta
         dt.querySelector('input').setAttribute('name', 'pergunta-' + perguntas.indexOf(item))
         dt.querySelector('input').value = item.respostas.indexOf(resposta)
-  
-        // arrow function
         dt.querySelector('input').onchange = (event) => 
         {
           const estaCorreta = event.target.value == item.correta
-  
           corretas.delete(item)
           if(estaCorreta)
           {
             corretas.add(item)
           }
-         
           mostrarTotal.textContent = corretas.size + ' de ' + totalDePerguntas
         } 
-  
-  
         quizItem.querySelector('dl').appendChild(dt)
     }
-  
-  //remove o primeiro elemento 
    quizItem.querySelector('dl dt').remove()
-  
-  //coloca a pergunta na tela
    quiz.appendChild(quizItem)
   }
